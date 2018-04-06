@@ -5,9 +5,10 @@ import java.util.ArrayList;
 public class DataTape {
 	private ArrayList<Integer> dataTape;
 	private int dataPointer;
-	
-	public DataTape(){
+
+	public DataTape() {
 		dataTape = new ArrayList<Integer>();
+		dataTape.add(0);
 		dataPointer = 0;
 	}
 
@@ -29,6 +30,9 @@ public class DataTape {
 
 	public void advanceTape() {
 		dataPointer += 1;
+		if (dataTape.size() - 1 < dataPointer) {
+			dataTape.add(0);
+		}
 	}
 
 	public void retreatTape() {
@@ -58,7 +62,5 @@ public class DataTape {
 	public void setDataPointer(int dataPointer) {
 		this.dataPointer = dataPointer;
 	}
-
-
 
 }

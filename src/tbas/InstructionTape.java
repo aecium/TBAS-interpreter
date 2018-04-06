@@ -3,11 +3,11 @@ package tbas;
 import java.util.ArrayList;
 
 public class InstructionTape {
-	private ArrayList<Character> instructionTape;
+	private char[] instructionTape;
 	private int instructionPointer;
-	
-	public InstructionTape(){
-		instructionTape = new ArrayList<Character>();
+
+	public InstructionTape(char[] instructions) {
+		instructionTape = instructions;
 		instructionPointer = 0;
 	}
 
@@ -20,7 +20,7 @@ public class InstructionTape {
 	}
 
 	public void clearTape() {
-		instructionTape.clear();
+		instructionTape = null;
 	}
 
 	public void advanceTape() {
@@ -31,24 +31,25 @@ public class InstructionTape {
 		instructionPointer -= 1;
 	}
 
-	public void jumpTape(int offset) {
-		instructionPointer += offset;
+	public void jumpTape(int cellIndex) {
+		instructionPointer = cellIndex;
 	}
 
 	public Character readTape() {
-		return instructionTape.get(instructionPointer);
+		return instructionTape[instructionPointer];
 	}
 
-	public ArrayList<Character> getTapeData() {
+	public char[] getTapeData() {
 		return instructionTape;
 	}
 
-	public void setTapeData(ArrayList<Character> tapeData) {
-		this.instructionTape = tapeData;
+	public char getInstruction() {
+
+		if (instructionPointer > instructionTape.length - 1  || instructionPointer < 0) {
+			return 'n';
+		} else {
+			return instructionTape[instructionPointer];
+		}
 	}
 
-	public void loadTape(ArrayList<Character> instructionList) {
-		instructionTape.addAll(instructionList);
-	}
-	
 }
