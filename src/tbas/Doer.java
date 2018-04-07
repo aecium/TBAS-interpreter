@@ -9,6 +9,7 @@ public class Doer {
 	private DataTape tDataTape = new DataTape();
 	private InstructionTape tInstructionTape;
 	private Integer loopAddress = null;
+	private int outPutMode = 0;
 
 	Doer(char[] instructions) {
 		tInstructionTape = new InstructionTape(instructions);
@@ -29,10 +30,10 @@ public class Doer {
 				tDataTape.decrementCellData();
 				break;
 			case '?':
-				System.out.print((char)(int)tDataTape.readTape());
+				outPut();
 				break;
 			case '=':
-
+				outPutMode = tDataTape.readTape();
 				break;
 			case '>':
 				tDataTape.advanceTape();
@@ -44,7 +45,7 @@ public class Doer {
 				loopAddress = tInstructionTape.getInstructionPointer();
 				break;
 			case ']':
-				if (loopAddress != null && tDataTape.readTape() != 0){
+				if (loopAddress != null && tDataTape.readTape() != 0) {
 					tInstructionTape.jumpTape(loopAddress);
 				}
 				break;
@@ -52,8 +53,24 @@ public class Doer {
 			}
 
 			tInstructionTape.advanceTape();
-
 		} while (tInstruction != 'n');
+		
+	}
+
+	private void outPut() {
+
+		switch (outPutMode) {
+			case 0:
+				System.out.print(tDataTape.readTape());
+				break;
+			case 1:
+				
+				break;
+			case 2:
+				System.out.print((char)(int)tDataTape.readTape());
+				break;
+				
+		}
 
 	}
 
