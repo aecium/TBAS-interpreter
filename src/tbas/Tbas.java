@@ -13,12 +13,12 @@ public class Tbas {
 			tInstructions = "+++[?-]";
 		}
 		
-		Doer tDoer = new Doer(tInstructions.toCharArray());
-
-		tDoer.run();
+		System.out.println(tInstructions);
 		
-		int a = 0;
-		a += 1;
+		Doer tDoer = new Doer(tInstructions.toCharArray());
+			
+		tDoer.run();
+		System.out.println("");
 
 	}
 
