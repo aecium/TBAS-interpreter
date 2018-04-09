@@ -44,7 +44,7 @@ public class DataTape {
 	}
 
 	public Integer readTape() {
-		return dataTape.get(dataPointer);
+		return dataTape.get(dataPointer); 
 	}
 
 	public ArrayList<Integer> getTapeData() {
