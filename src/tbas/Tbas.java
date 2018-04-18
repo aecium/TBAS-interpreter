@@ -15,7 +15,7 @@ public class Tbas {
 		
 		System.out.println(tInstructions);
 		
-		Doer tDoer = new Doer(tInstructions.toCharArray());
+		TPU tDoer = new TPU(tInstructions.toCharArray());
 			
 		tDoer.run();
 		System.out.println("");

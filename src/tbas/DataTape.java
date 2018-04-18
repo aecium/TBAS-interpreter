@@ -63,4 +63,10 @@ public class DataTape {
 		this.dataPointer = dataPointer;
 	}
 
+	public void write(int input) {
+		if(input < 255){
+			dataTape.set(dataPointer, input);
+		}
+	}
+
 }

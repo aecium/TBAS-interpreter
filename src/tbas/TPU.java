@@ -3,15 +3,18 @@ package tbas;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
 
-public class Doer {
+//TBAS Processing Unit (TPU)
+
+public class TPU {
 
 	private DataTape tDataTape = new DataTape();
 	private InstructionTape tInstructionTape;
 	private Integer loopAddress = null;
 	private int outPutMode = 0;
 
-	Doer(char[] instructions) {
+	TPU(char[] instructions) {
 		tInstructionTape = new InstructionTape(instructions);
 	}
 
@@ -30,7 +33,7 @@ public class Doer {
 				tDataTape.decrementCellData();
 				break;
 			case '?':
-				outPut();
+				inPutOutPut();
 				break;
 			case '=':
 				outPutMode = tDataTape.readTape();
@@ -54,24 +57,42 @@ public class Doer {
 
 			tInstructionTape.advanceTape();
 		} while (tInstruction != 'n');
-		
+
 	}
 
-	private void outPut() {
+	private void inPutOutPut() {
 
 		switch (outPutMode) {
-			case 0:
-				System.out.print(tDataTape.readTape());
-				break;
-			case 1:
-				
-				break;
-			case 2:
-				System.out.print((char)(int)tDataTape.readTape());
-				break;
-				
+		case 0: // Serial Console - Decimal Write
+			System.out.print(tDataTape.readTape());
+			break;
+		case 1: // Serial Console - Decimal Read
+			scRead(1);
+			break;
+		case 2: // Serial Console - ASCII Writ
+			System.out.print((char) (int) tDataTape.readTape());
+			break;
+		case 3: // Serial Console - ASCII Read
+			scRead(3);
+			break;
+
 		}
 
+	}
+
+	private void scRead(int mode) {
+		Scanner sc = new Scanner(System.in);
+
+		switch (mode) {
+		case 1: // Serial Console - Decimal Read
+			tDataTape.write(sc.nextInt());
+			break;
+		case 3: // Serial Console - ASCII Read
+			// you can enter more that on char but all beyond the first one will
+			// be ignored
+			tDataTape.write(sc.next().charAt(0));
+			break;
+		}
 	}
 
 }
