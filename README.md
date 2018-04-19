@@ -1,6 +1,6 @@
 This is a TBAS interpreter
 
-**Usage:** java tbas.Tbas '<tbas>'
+**Usage:** java tbas.Tbas '\<tbas code\>'
 
 All the command Operators are supported which are -+<>[]=?
 
