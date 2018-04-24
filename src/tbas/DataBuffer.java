@@ -2,13 +2,13 @@ package tbas;
 
 import java.util.ArrayList;
 
-public class Buffer {
-	private ArrayList<Integer> dataBuffer;
+public class DataBuffer {
+	private ArrayList<Byte> dataBuffer;
 	private int bufferPointer;
 
-	public Buffer() {
-		dataBuffer = new ArrayList<Integer>();
-		dataBuffer.add(0);
+	public DataBuffer() {
+		dataBuffer = new ArrayList<Byte>();
+		dataBuffer.add((byte)0);
 		bufferPointer = 0;
 	}
 
@@ -20,7 +20,7 @@ public class Buffer {
 	public void advanceBuffer() {
 		bufferPointer += 1;
 		if (dataBuffer.size() - 1 < bufferPointer) {
-			dataBuffer.add(0);
+			dataBuffer.add((byte)0);
 		}
 	}
 
@@ -28,15 +28,15 @@ public class Buffer {
 		bufferPointer -= 1;
 	}
 
-	public Integer readBuffer() {
+	public Byte readBuffer() {
 		return dataBuffer.get(bufferPointer); 
 	}
 
-	public ArrayList<Integer> getBufferData() {
+	public ArrayList<Byte> getBufferData() {
 		return dataBuffer;
 	}
 
-	public void loadBuffer(ArrayList<Integer> tapeData) {
+	public void loadBuffer(ArrayList<Byte> tapeData) {
 		this.dataBuffer = tapeData;
 	}
 
@@ -48,9 +48,10 @@ public class Buffer {
 		this.bufferPointer = dataPointer;
 	}
 
-	public void write(int input) {
+	public void write(Byte input) {
 		if(input < 255){
 			dataBuffer.set(bufferPointer, input);
+			advanceBuffer();
 		}
 	}
 

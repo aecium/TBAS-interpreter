@@ -11,6 +11,7 @@ public class TPU {
 
 	private DataTape tDataTape = new DataTape();
 	private InstructionTape tInstructionTape;
+	private DataBuffer tDataBuffer = new DataBuffer();
 	private Integer loopAddress = null;
 	private int outPutMode = 0;
 
@@ -88,7 +89,7 @@ public class TPU {
 			
 			break;
 		case 8: //Buffer Enqueue
-			
+			tDataBuffer.write(tDataTape.readTape().byteValue());
 			break;
 		case 9: //Buffer Dequeue – FILO
 			
@@ -156,12 +157,12 @@ public class TPU {
 
 		switch (mode) {
 		case 1: // Serial Console - Decimal Read
-			tDataTape.write(sc.nextInt());
+			tDataTape.write(sc.nextByte());
 			break;
 		case 3: // Serial Console - ASCII Read
 			// you can enter more that on char but all beyond the first one will
 			// be ignored
-			tDataTape.write(sc.next().charAt(0));
+			tDataTape.write((byte)sc.next().charAt(0));
 			break;
 		}
 	}
