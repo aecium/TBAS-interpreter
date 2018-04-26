@@ -8,7 +8,12 @@ import java.util.Scanner;
 //TBAS Processing Unit (TPU)
 
 public class TPU {
-
+	
+	private final char[] UCS_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+	private final char[] LCS_ALPHA = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+	private final char[] DIGiTS = "0123456789".toCharArray();
+	private final char[] TBAS_ENUM = "+-<>[]=?".toCharArray();
+	
 	private DataTape tDataTape = new DataTape();
 	private InstructionTape tInstructionTape;
 	private DataBuffer tDataBuffer = new DataBuffer();
@@ -89,7 +94,7 @@ public class TPU {
 			
 			break;
 		case 8: //Buffer Enqueue
-			tDataBuffer.write(tDataTape.readTape().byteValue());
+			tDataBuffer.enqueue(tDataTape.readTape().byteValue());
 			break;
 		case 9: //Buffer Dequeue – FILO
 			
@@ -101,16 +106,16 @@ public class TPU {
 			tDataBuffer.clearBuffer();
 			break;
 		case 12: //Converter – Lower Case ASCII Enumeration
-			
+			tDataTape.write((byte)LCS_ALPHA[tDataTape.readTape()]);
 			break;
 		case 13:  //Converter – Upper Case ASCII Enumeration
-			
+			tDataTape.write((byte)UCS_ALPHA[tDataTape.readTape()]);
 			break;
 		case 14: //Converter – ASCII Numeral
-			
+			tDataTape.write((byte)DIGiTS[tDataTape.readTape()]);
 			break;
 		case 15: //Converter – TBAS Enumeration
-			
+			tDataTape.write((byte)TBAS_ENUM[tDataTape.readTape()]);
 			break;
 		case 16: //ALU – Add
 			

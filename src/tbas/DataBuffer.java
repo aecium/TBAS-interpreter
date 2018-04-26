@@ -55,11 +55,25 @@ public class DataBuffer {
 		this.bufferPointer = dataPointer;
 	}
 
-	public void write(Byte input) {
+	public void enqueue(Byte input) {
 		if(input < 255){
 			dataBuffer.set(bufferPointer, input);
 			advanceBuffer();
 		}
+	}
+	
+	public Byte dequeue(boolean filo) {
+		Byte holdByte;
+		
+		if (filo){
+			holdByte = dataBuffer.get(0);
+			dataBuffer.remove(0);
+		} else {
+			holdByte = dataBuffer.get(dataBuffer.size()-1);
+			dataBuffer.remove(dataBuffer.size()-1);
+		}
+		
+		return holdByte;
 	}
 
 }

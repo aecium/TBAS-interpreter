@@ -51,7 +51,7 @@ public class DataTape {
 		return dataTape;
 	}
 
-	public void setTapeData(ArrayList<Byte> tapeData) {
+	public void loadTapeData(ArrayList<Byte> tapeData) {
 		this.dataTape = tapeData;
 	}
 
