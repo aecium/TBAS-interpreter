@@ -25,30 +25,30 @@ public class TPU {
 		do {
 			tInstruction = tInstructionTape.getInstruction();
 
-			switch (tInstruction) {
+			switch ((byte)tInstruction) {
 
-			case '+':
+			case (byte)'+':
 				tDataTape.incrementCellData();
 				break;
-			case '-':
+			case (byte)'-':
 				tDataTape.decrementCellData();
 				break;
-			case '?':
+			case (byte)'?':
 				inPutOutPut();
 				break;
-			case '=':
+			case (byte)'=':
 				outPutMode = tDataTape.readTape();
 				break;
-			case '>':
+			case (byte)'>':
 				tDataTape.advanceTape();
 				break;
-			case '<':
+			case (byte)'<':
 				tDataTape.retreatTape();
 				break;
-			case '[':
+			case (byte)'[':
 				loopAddress = tInstructionTape.getInstructionPointer();
 				break;
-			case ']':
+			case (byte)']':
 				if (loopAddress != null && tDataTape.readTape() != 0) {
 					tInstructionTape.jumpTape(loopAddress);
 				}
@@ -83,7 +83,7 @@ public class TPU {
 			
 			break;
 		case 6: //Buffer Program
-			
+			tDataBuffer.loadBuffer(tInstructionTape.getTapeData());
 			break;
 		case 7: //Execute Task
 			
@@ -98,7 +98,7 @@ public class TPU {
 
 			break;
 		case 11: //Buffer Clear
-			
+			tDataBuffer.clearBuffer();
 			break;
 		case 12: //Converter – Lower Case ASCII Enumeration
 			

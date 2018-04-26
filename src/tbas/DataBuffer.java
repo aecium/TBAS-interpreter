@@ -40,6 +40,13 @@ public class DataBuffer {
 		this.dataBuffer = tapeData;
 	}
 
+	public void loadBuffer(char[] tapeData) {
+		this.dataBuffer.clear();
+		for (int i =0; i <= tapeData.length - 1; i++){
+			this.dataBuffer.add((byte)tapeData[i]);
+		}
+	}
+	
 	public int getBufferPointer() {
 		return bufferPointer;
 	}
