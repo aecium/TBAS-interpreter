@@ -67,16 +67,17 @@ public class TPU {
 	}
 
 	private void inPutOutPut() {
-
+		byte mCellVal = tDataTape.readTape();
+		
 		switch (outPutMode) {
 		case 0: //Serial Console - Decimal Write
-			System.out.print(tDataTape.readTape());
+			System.out.print(mCellVal);
 			break;
 		case 1: //Serial Console - Decimal Read
 			scRead(1);
 			break;
 		case 2: //Serial Console - ASCII Writ
-			System.out.print((char) (int) tDataTape.readTape());
+			System.out.print((char) (int) mCellVal);
 			break;
 		case 3: //Serial Console - ASCII Read
 			scRead(3);
@@ -94,7 +95,7 @@ public class TPU {
 			
 			break;
 		case 8: //Buffer Enqueue
-			tDataBuffer.enqueue(tDataTape.readTape().byteValue());
+			tDataBuffer.enqueue(mCellVal);
 			break;
 		case 9: //Buffer Dequeue – FILO
 			
@@ -106,16 +107,20 @@ public class TPU {
 			tDataBuffer.clearBuffer();
 			break;
 		case 12: //Converter – Lower Case ASCII Enumeration
-			tDataTape.write((byte)LCS_ALPHA[tDataTape.readTape()]);
+			if (mCellVal <= 25 && mCellVal >= 0)
+			tDataTape.write((byte)LCS_ALPHA[mCellVal]);
 			break;
 		case 13:  //Converter – Upper Case ASCII Enumeration
-			tDataTape.write((byte)UCS_ALPHA[tDataTape.readTape()]);
+			if (mCellVal <= 25 && mCellVal >= 0)
+			tDataTape.write((byte)UCS_ALPHA[mCellVal]);
 			break;
 		case 14: //Converter – ASCII Numeral
-			tDataTape.write((byte)DIGiTS[tDataTape.readTape()]);
+			if (mCellVal <= 8 && mCellVal >= 0)
+			tDataTape.write((byte)DIGiTS[mCellVal]);
 			break;
 		case 15: //Converter – TBAS Enumeration
-			tDataTape.write((byte)TBAS_ENUM[tDataTape.readTape()]);
+			if (mCellVal <= 6 && mCellVal >= 0)
+			tDataTape.write((byte)TBAS_ENUM[mCellVal]);
 			break;
 		case 16: //ALU – Add
 			
@@ -142,10 +147,10 @@ public class TPU {
 			
 			break;
 		case 24: //Meta – Get MPTR
-			
+			tDataTape.write((byte)tDataTape.getDataPointer());
 			break;
 		case 25: //Meta – Get EPTR
-			
+			tDataTape.write((byte)(tInstructionTape.getInstructionPointer()+1));
 			break;
 		case 26: //Meta – Relative Jump Left
 			
