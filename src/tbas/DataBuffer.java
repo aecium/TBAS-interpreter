@@ -8,8 +8,6 @@ public class DataBuffer {
 
 	public DataBuffer() {
 		dataBuffer = new ArrayList<Byte>();
-		dataBuffer.add((byte)0);
-		bufferPointer = 0;
 	}
 
 
@@ -19,7 +17,7 @@ public class DataBuffer {
 
 	public void advanceBuffer() {
 		bufferPointer += 1;
-		if (dataBuffer.size() - 1 < bufferPointer) {
+		if (dataBuffer.isEmpty() || dataBuffer.size() - 1 < bufferPointer) {
 			dataBuffer.add((byte)0);
 		}
 	}
