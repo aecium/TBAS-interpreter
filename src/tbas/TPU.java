@@ -98,10 +98,10 @@ public class TPU {
 			tDataBuffer.enqueue(mCellVal);
 			break;
 		case 9: //Buffer Dequeue – FILO
-			
+			tDataBuffer.dequeue(true);
 			break;
 		case 10: //Buffer Dequeue – FIFO
-
+			tDataBuffer.dequeue(false);
 			break;
 		case 11: //Buffer Clear
 			tDataBuffer.clearBuffer();
@@ -123,28 +123,28 @@ public class TPU {
 			tDataTape.write((byte)TBAS_ENUM[mCellVal]);
 			break;
 		case 16: //ALU – Add
-			
+			tDataTape.write((byte)(tDataTape.readTape() + tDataBuffer.dequeue(false)));
 			break;
 		case 17: //ALU – Sub
-			
+			tDataTape.write((byte)(tDataTape.readTape() - tDataBuffer.dequeue(false)));
 			break;
 		case 18: //ALU – Mul
-			
+			tDataTape.write((byte)(tDataTape.readTape() * tDataBuffer.dequeue(false)));
 			break;
 		case 19: //ALU – Div
-			
+			tDataTape.write((byte)(tDataTape.readTape() / tDataBuffer.dequeue(false)));
 			break;
 		case 20: //ALU – Bit And
-			
+			tDataTape.write((byte)(tDataTape.readTape() & tDataBuffer.dequeue(false)));
 			break;
 		case 21: //ALU – Bit Or
-			
+			tDataTape.write((byte)(tDataTape.readTape() | tDataBuffer.dequeue(false)));
 			break;
 		case 22: //ALU – Logical Not
-			
+			tDataTape.write((byte)(tDataTape.readTape() ^ (byte)255));
 			break;
 		case 23: //ALU – Bit Xor
-			
+			tDataTape.write((byte)(tDataTape.readTape() ^ tDataBuffer.dequeue(false)));
 			break;
 		case 24: //Meta – Get MPTR
 			tDataTape.write((byte)tDataTape.getDataPointer());
@@ -153,10 +153,21 @@ public class TPU {
 			tDataTape.write((byte)(tInstructionTape.getInstructionPointer()+1));
 			break;
 		case 26: //Meta – Relative Jump Left
-			
+			int tempLeftJump = tInstructionTape.getInstructionPointer() - tDataTape.readTape();
+			if ( tempLeftJump > 0){
+				tInstructionTape.setInstructionPointer(tempLeftJump);
+			} else {
+				tInstructionTape.setInstructionPointer(0);
+			}
 			break;
 		case 27: //Meta – Relative Jump Right
-			
+			int tempRightJump = tInstructionTape.getInstructionPointer() + tDataTape.readTape();
+			int tInstructionTapeLength = tInstructionTape.getTapeData().length - 1;
+			if ( tempRightJump <= tInstructionTapeLength){
+				tInstructionTape.setInstructionPointer(tempRightJump);
+			} else {
+				tInstructionTape.setInstructionPointer(tInstructionTapeLength);
+			}
 			break;
 		}
 
