@@ -7,12 +7,12 @@ public class InstructionTape {
 	private int instructionPointer;
 
 	public InstructionTape(char[] instructions) {
-		instructionTape = instructions;
-		instructionPointer = 0;
+		this.instructionTape = instructions;
+		this.instructionPointer = 0;
 	}
 
 	public int getInstructionPointer() {
-		return instructionPointer;
+		return this.instructionPointer;
 	}
 
 	public void setInstructionPointer(int instructionPointer) {
@@ -20,27 +20,19 @@ public class InstructionTape {
 	}
 
 	public void clearTape() {
-		instructionTape = null;
+		this.instructionTape = null;
 	}
 
 	public void advanceTape() {
-		instructionPointer += 1;
+		this.instructionPointer += 1;
 	}
 
 	public void retreatTape() {
-		instructionPointer -= 1;
-	}
-
-	public void jumpTape(int cellIndex) {
-		instructionPointer = cellIndex;
-	}
-
-	public Character readTape() {
-		return instructionTape[instructionPointer];
+		this.instructionPointer -= 1;
 	}
 
 	public char[] getTapeData() {
-		return instructionTape;
+		return this.instructionTape;
 	}
 
 	public char getInstruction() {
@@ -48,7 +40,7 @@ public class InstructionTape {
 		if (instructionPointer > instructionTape.length - 1  || instructionPointer < 0) {
 			return 'n';
 		} else {
-			return instructionTape[instructionPointer];
+			return this.instructionTape[instructionPointer];
 		}
 	}
 

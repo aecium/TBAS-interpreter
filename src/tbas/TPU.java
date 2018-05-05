@@ -55,7 +55,7 @@ public class TPU {
 				break;
 			case (byte)']':
 				if (loopAddress != null && tDataTape.readTape() != 0) {
-					tInstructionTape.jumpTape(loopAddress);
+					tInstructionTape.setInstructionPointer(loopAddress);
 				}
 				break;
 
