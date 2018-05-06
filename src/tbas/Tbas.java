@@ -6,19 +6,23 @@ public class Tbas {
 
 	public static void main(String[] args) {
 		String tInstructions;
+		InstructionTape tInstructionTape;
+		DataTape tDataTape = new DataTape();
+		DataBuffer tDataBuffer = new DataBuffer();
 		
 		if (args.length > 0) {
 			tInstructions = args[0];
 		} else {
 			tInstructions = "+++[?-]";
 		}
+
+		tInstructionTape = new InstructionTape(tInstructions.toCharArray());
 		
-		System.out.println(tInstructions);
+		TPU tDoer = new TPU(tInstructionTape,tDataTape,tDataBuffer);
 		
-		TPU tDoer = new TPU(tInstructions.toCharArray());
-			
-		tDoer.run();
-		System.out.println("");
+		String tOutPut = tDoer.run();
+		
+		System.out.print(tOutPut);
 
 	}
 

@@ -8,52 +8,55 @@ import java.util.Scanner;
 //TBAS Processing Unit (TPU)
 
 public class TPU {
-	
+
 	private final char[] UCS_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 	private final char[] LCS_ALPHA = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 	private final char[] DIGiTS = "0123456789".toCharArray();
 	private final char[] TBAS_ENUM = "+-<>[]=?".toCharArray();
-	
-	private DataTape tDataTape = new DataTape();
+
+	private DataTape tDataTape;
 	private InstructionTape tInstructionTape;
-	private DataBuffer tDataBuffer = new DataBuffer();
+	private DataBuffer tDataBuffer;
 	private Integer loopAddress = null;
 	private int outPutMode = 0;
+	private String outPutString = "";
 
-	TPU(char[] instructions) {
-		tInstructionTape = new InstructionTape(instructions);
+	public TPU(InstructionTape instructions,DataTape dataTape,DataBuffer dataBuffer) {
+		tInstructionTape = instructions ;
+		tDataTape = dataTape;
+		tDataBuffer = dataBuffer;
 	}
 
-	public void run() {
+	public String run() {
 		char tInstruction = 'n';
 
 		do {
 			tInstruction = tInstructionTape.getInstruction();
 
-			switch ((byte)tInstruction) {
+			switch ((byte) tInstruction) {
 
-			case (byte)'+':
+			case (byte) '+':
 				tDataTape.incrementCellData();
 				break;
-			case (byte)'-':
+			case (byte) '-':
 				tDataTape.decrementCellData();
 				break;
-			case (byte)'?':
+			case (byte) '?':
 				inPutOutPut();
 				break;
-			case (byte)'=':
+			case (byte) '=':
 				outPutMode = tDataTape.readTape();
 				break;
-			case (byte)'>':
+			case (byte) '>':
 				tDataTape.advanceTape();
 				break;
-			case (byte)'<':
+			case (byte) '<':
 				tDataTape.retreatTape();
 				break;
-			case (byte)'[':
+			case (byte) '[':
 				loopAddress = tInstructionTape.getInstructionPointer();
 				break;
-			case (byte)']':
+			case (byte) ']':
 				if (loopAddress != null && tDataTape.readTape() != 0) {
 					tInstructionTape.setInstructionPointer(loopAddress);
 				}
@@ -63,107 +66,109 @@ public class TPU {
 
 			tInstructionTape.advanceTape();
 		} while (tInstruction != 'n');
-
+		
+		return outPutString;
+		
 	}
 
 	private void inPutOutPut() {
 		byte mCellVal = tDataTape.readTape();
-		
+
 		switch (outPutMode) {
-		case 0: //Serial Console - Decimal Write
-			System.out.print(mCellVal);
+		case 0: // Serial Console - Decimal Write
+			outPutString += (int) mCellVal;
 			break;
-		case 1: //Serial Console - Decimal Read
+		case 1: // Serial Console - Decimal Read
 			scRead(1);
 			break;
-		case 2: //Serial Console - ASCII Writ
-			System.out.print((char) (int) mCellVal);
+		case 2: // Serial Console - ASCII Writ
+			outPutString += (char) (int) mCellVal;
 			break;
-		case 3: //Serial Console - ASCII Read
+		case 3: // Serial Console - ASCII Read
 			scRead(3);
 			break;
-		case 4: //Serial Modem – ASCII Write
-			
+		case 4: // Serial Modem – ASCII Write
+
 			break;
-		case 5: //Serial modem – ASCII Read
-			
+		case 5: // Serial modem – ASCII Read
+
 			break;
-		case 6: //Buffer Program
+		case 6: // Buffer Program
 			tDataBuffer.loadBuffer(tInstructionTape.getTapeData());
 			break;
-		case 7: //Execute Task
-			
+		case 7: // Execute Task
+
 			break;
-		case 8: //Buffer Enqueue
+		case 8: // Buffer Enqueue
 			tDataBuffer.enqueue(mCellVal);
 			break;
-		case 9: //Buffer Dequeue – FILO
+		case 9: // Buffer Dequeue – FILO
 			tDataBuffer.dequeue(true);
 			break;
-		case 10: //Buffer Dequeue – FIFO
+		case 10: // Buffer Dequeue – FIFO
 			tDataBuffer.dequeue(false);
 			break;
-		case 11: //Buffer Clear
+		case 11: // Buffer Clear
 			tDataBuffer.clearBuffer();
 			break;
-		case 12: //Converter – Lower Case ASCII Enumeration
+		case 12: // Converter – Lower Case ASCII Enumeration
 			if (mCellVal <= 25 && mCellVal >= 0)
-			tDataTape.write((byte)LCS_ALPHA[mCellVal]);
+				tDataTape.write((byte) LCS_ALPHA[mCellVal]);
 			break;
-		case 13:  //Converter – Upper Case ASCII Enumeration
+		case 13: // Converter – Upper Case ASCII Enumeration
 			if (mCellVal <= 25 && mCellVal >= 0)
-			tDataTape.write((byte)UCS_ALPHA[mCellVal]);
+				tDataTape.write((byte) UCS_ALPHA[mCellVal]);
 			break;
-		case 14: //Converter – ASCII Numeral
+		case 14: // Converter – ASCII Numeral
 			if (mCellVal <= 8 && mCellVal >= 0)
-			tDataTape.write((byte)DIGiTS[mCellVal]);
+				tDataTape.write((byte) DIGiTS[mCellVal]);
 			break;
-		case 15: //Converter – TBAS Enumeration
+		case 15: // Converter – TBAS Enumeration
 			if (mCellVal <= 6 && mCellVal >= 0)
-			tDataTape.write((byte)TBAS_ENUM[mCellVal]);
+				tDataTape.write((byte) TBAS_ENUM[mCellVal]);
 			break;
-		case 16: //ALU – Add
-			tDataTape.write((byte)(tDataTape.readTape() + tDataBuffer.dequeue(false)));
+		case 16: // ALU – Add
+			tDataTape.write((byte) (tDataTape.readTape() + tDataBuffer.dequeue(false)));
 			break;
-		case 17: //ALU – Sub
-			tDataTape.write((byte)(tDataTape.readTape() - tDataBuffer.dequeue(false)));
+		case 17: // ALU – Sub
+			tDataTape.write((byte) (tDataTape.readTape() - tDataBuffer.dequeue(false)));
 			break;
-		case 18: //ALU – Mul
-			tDataTape.write((byte)(tDataTape.readTape() * tDataBuffer.dequeue(false)));
+		case 18: // ALU – Mul
+			tDataTape.write((byte) (tDataTape.readTape() * tDataBuffer.dequeue(false)));
 			break;
-		case 19: //ALU – Div
-			tDataTape.write((byte)(tDataTape.readTape() / tDataBuffer.dequeue(false)));
+		case 19: // ALU – Div
+			tDataTape.write((byte) (tDataTape.readTape() / tDataBuffer.dequeue(false)));
 			break;
-		case 20: //ALU – Bit And
-			tDataTape.write((byte)(tDataTape.readTape() & tDataBuffer.dequeue(false)));
+		case 20: // ALU – Bit And
+			tDataTape.write((byte) (tDataTape.readTape() & tDataBuffer.dequeue(false)));
 			break;
-		case 21: //ALU – Bit Or
-			tDataTape.write((byte)(tDataTape.readTape() | tDataBuffer.dequeue(false)));
+		case 21: // ALU – Bit Or
+			tDataTape.write((byte) (tDataTape.readTape() | tDataBuffer.dequeue(false)));
 			break;
-		case 22: //ALU – Logical Not
-			tDataTape.write((byte)(tDataTape.readTape() ^ (byte)255));
+		case 22: // ALU – Logical Not
+			tDataTape.write((byte) (tDataTape.readTape() ^ (byte) 255));
 			break;
-		case 23: //ALU – Bit Xor
-			tDataTape.write((byte)(tDataTape.readTape() ^ tDataBuffer.dequeue(false)));
+		case 23: // ALU – Bit Xor
+			tDataTape.write((byte) (tDataTape.readTape() ^ tDataBuffer.dequeue(false)));
 			break;
-		case 24: //Meta – Get MPTR
-			tDataTape.write((byte)tDataTape.getDataPointer());
+		case 24: // Meta – Get MPTR
+			tDataTape.write((byte) tDataTape.getDataPointer());
 			break;
-		case 25: //Meta – Get EPTR
-			tDataTape.write((byte)(tInstructionTape.getInstructionPointer()+1));
+		case 25: // Meta – Get EPTR
+			tDataTape.write((byte) (tInstructionTape.getInstructionPointer() + 1));
 			break;
-		case 26: //Meta – Relative Jump Left
+		case 26: // Meta – Relative Jump Left
 			int tempLeftJump = tInstructionTape.getInstructionPointer() - tDataTape.readTape();
-			if ( tempLeftJump > 0){
+			if (tempLeftJump > 0) {
 				tInstructionTape.setInstructionPointer(tempLeftJump);
 			} else {
 				tInstructionTape.setInstructionPointer(0);
 			}
 			break;
-		case 27: //Meta – Relative Jump Right
+		case 27: // Meta – Relative Jump Right
 			int tempRightJump = tInstructionTape.getInstructionPointer() + tDataTape.readTape();
 			int tInstructionTapeLength = tInstructionTape.getTapeData().length - 1;
-			if ( tempRightJump <= tInstructionTapeLength){
+			if (tempRightJump <= tInstructionTapeLength) {
 				tInstructionTape.setInstructionPointer(tempRightJump);
 			} else {
 				tInstructionTape.setInstructionPointer(tInstructionTapeLength);
@@ -183,7 +188,7 @@ public class TPU {
 		case 3: // Serial Console - ASCII Read
 			// you can enter more that on char but all beyond the first one will
 			// be ignored
-			tDataTape.write((byte)sc.next().charAt(0));
+			tDataTape.write((byte) sc.next().charAt(0));
 			break;
 		}
 	}
