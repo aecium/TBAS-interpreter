@@ -1,6 +1,8 @@
 package tbas;
 
 import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -21,8 +23,8 @@ public class TPU {
 	private int outPutMode = 0;
 	private String outPutString = "";
 
-	public TPU(InstructionTape instructions,DataTape dataTape,DataBuffer dataBuffer) {
-		tInstructionTape = instructions ;
+	public TPU(InstructionTape instructions, DataTape dataTape, DataBuffer dataBuffer) {
+		tInstructionTape = instructions;
 		tDataTape = dataTape;
 		tDataBuffer = dataBuffer;
 	}
@@ -66,9 +68,9 @@ public class TPU {
 
 			tInstructionTape.advanceTape();
 		} while (tInstruction != 'n');
-		
+
 		return outPutString;
-		
+
 	}
 
 	private void inPutOutPut() {
@@ -179,16 +181,17 @@ public class TPU {
 	}
 
 	private void scRead(int mode) {
-		Scanner sc = new Scanner(System.in);
+		byte tInputByte = 0;
+		// this wont work until I ad a UI for input java does not have a way to
+		// read each input as it is entered
 
 		switch (mode) {
 		case 1: // Serial Console - Decimal Read
-			tDataTape.write(sc.nextByte());
+			tDataTape.write(tInputByte);
 			break;
 		case 3: // Serial Console - ASCII Read
-			// you can enter more that on char but all beyond the first one will
-			// be ignored
-			tDataTape.write((byte) sc.next().charAt(0));
+			if (tInputByte >= 32 && tInputByte <= 126)
+				tDataTape.write(tInputByte);
 			break;
 		}
 	}

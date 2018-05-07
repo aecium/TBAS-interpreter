@@ -4,12 +4,12 @@ This is a TBAS interpreter
 
 All the command Operators are supported which are -+<>[]=?
 
-IO modes all modes except 4,5 & 7 are implemented.
+IO modes all modes except 1,3,4,5 & 7 are implemented.
 
 full TBAS doc here https://hackthebadge.com/2018-cyphercon-3-0-badge-special-message-from-the-tymkrs/
 
 **ToDo**
- * support IO modes 4,5 & 7
+ * support IO modes 1,3,4,5 & 7
  * add unit tests to check that it is all working
  * add UI
  * add debuging
